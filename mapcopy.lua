@@ -1,20 +1,28 @@
--- Basit Map Kopyalama Scripti
-local workspace = game:GetService("Workspace")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
 
-local function copyMap()
-    local clonedMap = Instance.new("Folder")
-    clonedMap.Name = "ClonedMap"
-    clonedMap.Parent = workspace
+local function saveInstance(instance, folder)
+    local data = {}
     
-    for _, obj in pairs(workspace:GetChildren()) do
-        if obj:IsA("BasePart") or obj:IsA("Model") then
-            local clone = obj:Clone()
-            clone.Parent = clonedMap
+    for _, child in pairs(instance:GetChildren()) do
+        if child:IsA("BasePart") then
+            table.insert(data, {
+                Name = child.Name,
+                Position = {child.Position.X, child.Position.Y, child.Position.Z},
+                Size = {child.Size.X, child.Size.Y, child.Size.Z},
+                Color = {child.Color.R, child.Color.G, child.Color.B},
+                Material = child.Material.Name
+            })
         end
     end
     
-    return clonedMap
+    local json = HttpService:JSONEncode(data)
+    
+    -- Bu kısım executor'üne göre değişir
+    writefile("MapData_" .. game.PlaceId .. ".json", json)
+    
+    return "Map verileri kaydedildi!"
 end
 
-copyMap()
-print("Map kopyalandı!")
+-- Kullanımı:
+saveInstance(workspace, "MapData")
