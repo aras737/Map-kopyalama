@@ -1,0 +1,9 @@
+.boomserver [Sunucuİsmi] [Kanalİsmi] [Miktar]
+
+.kategoripatlat
+
+.banall
+
+.kanalyagmur [İsim]
+
+.uygulama
